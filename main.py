@@ -1,36 +1,39 @@
 import os
 import cv2
-from vision import drawframe
-for filename in uploaded.keys():
-    # Save the uploaded file to the local file system
-    with open(filename, 'wb') as f:
-        f.write(uploaded[filename])
+from vision import drawframe, load
 
-    # Create the 'data' directory if it doesn't exist
-    if not os.path.exists('data'):
-        os.makedirs('data')
-
-    # Move uploaded file to the correct directory
-    os.rename(filename, f"data/{filename}")
-    
-
+# open camera
+# draw a frame
+# process frame
+# show frame
 
 # main function: captures an image of the camera, then draws on it
 def main() : 
-    cam = cv2.VideoCapture(0) 
+    # Open the default camera, default camera here is 1
+    cam = cv2.VideoCapture(1)
+    
+    if not cam.isOpened():
+        print("Error: Camera not opened or not available.")
+        return
+    
+    else:
+       print("Camera opened successfully.")    
+    
+    device, model = load()
     while True:
-        drawframe(capture(cam))
-        key = cv2.waitKey(1)
-        if key == 'q':
+        ret, frame = cam.read()
+        
+        processed_frame = drawframe(device, model, frame, debug=False)
+        # Display the captured frame
+        cv2.imshow('window',processed_frame)
+
+        # Press 'q' to exit the loop
+        if cv2.waitKey(1) == ord('q'):
             break
 
+    # Release the capture and writer objects
     cam.release()
+    # out.release()
     cv2.destroyAllWindows()
     
-    
-    
-def capture(cam) :
-    
-    check, frame = cam.read()
-
-    cv2.imshow('video', frame)
+main()

@@ -1,5 +1,6 @@
 # ripped from GfG
 import cv2
+from vision import drawframe
 
 # Open the default camera
 cam = cv2.VideoCapture(1)
@@ -14,9 +15,6 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 while True:
     ret, frame = cam.read()
-
-    # Write the frame to the output file
-    # out.write(frame)
 
     # Display the captured frame
     cv2.imshow('window',frame)

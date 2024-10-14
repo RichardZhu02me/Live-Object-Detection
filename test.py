@@ -1,14 +1,22 @@
+# Tests the program on the downloaded images.
 import os
-import sys
+import cv2
+from vision import drawframe, load
 
-# Construct the path to the yolov7 directory
-yolov7_path = 'yolov7'
 
-# Add the yolov7 directory to sys.path
-sys.path.append(yolov7_path)
+# main function: captures an image of the camera, then draws on it
+print("I am in main")
+# Open the default camera, default camera here is 1
+# cam = cv2.VideoCapture()
+device, model = load()
 
-# Verify the path
-print("YOLOv7 Path:", yolov7_path)
+# ret, frame = cam.read()
 
-# Import from yolov7 after adjusting sys.path
-from yolov7.models.experimental import attempt_load
+frame = cv2.imread('images/dogcat.jpg')
+
+processed_frame = drawframe(device, model, frame)
+# Display the captured frame
+cv2.imshow('window',processed_frame)
+cv2.waitKey(0)
+if cv2.waitKey(1) == ord('q'):
+    cv2.destroyAllWindows()
